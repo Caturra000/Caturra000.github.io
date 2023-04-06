@@ -1,0 +1,12 @@
+markdown:         kramdown
+permalink:        /posts/:title/
+
+title:            "Caturra's Blog"    
+description:      "none"
+highlighter:      rouge
+author:
+    name:      caturra 
+    key:       caturra
+
+kramdown:
+  math_engine: katex

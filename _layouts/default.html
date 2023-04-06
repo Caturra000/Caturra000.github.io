@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>{{ site.title }}|{{ site.description }}</title>
+  {% include header.html %}
+  <meta content="{{ site.headdesc }}" name="description"/>
+  <meta content="{{ site.headkeys }}" name="keywords"/>
+  <link rel="shortcut icon" href="/img/favicon.png" />
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="main clearfix">
+{{ content }}
+</div>
+</div>
+</body>
+</html>
+
