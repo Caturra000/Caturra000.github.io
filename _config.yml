@@ -1,11 +1,11 @@
 markdown:         kramdown
-permalink:        /posts/:title/
+permalink:        /archives/:title/
 
 title:            "Caturra's Blog"    
-description:      "none"
+description:      "Caturra的个人博客"
 highlighter:      rouge
 author:
-    name:      caturra 
+    name:      caturra
     key:       caturra
 
 kramdown:

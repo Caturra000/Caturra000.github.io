@@ -1,7 +1,7 @@
 ---
-layout:  page
-title: 发布
-description: 发布
+layout: page
+title: 分类
+description: 分类
 ---
 
 <ul class="archive">

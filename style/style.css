@@ -36,7 +36,12 @@ body {
   font-size: 18px;
   color: #525d67;
   background: #FFF;
-  font-family: "PT Serif", 'Times New Roman', Times, Arial, "Noto Serif SC", "思源宋体", SimSun, serif, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", "STHeiti", "WenQuanYi Micro Hei", sans-serif;
+  font-family: "PT Serif", 'Times New Roman', Times, Arial, 
+    /*my favorite*/ "Source Han Serif SC", "Source Han Serif CN", "Source Han Serif", "思源宋体 CN", "思源宋体",
+    /*apple*/ "Songti SC", "Songti",
+    /*windows*/ SimSun,
+    /*kindle*/ STSong,
+    /*others*/ serif, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", "STHeiti", "WenQuanYi Micro Hei", sans-serif;
   -webkit-font-smoothing: antialiased;
   -webkit-transform: translate3d(0,0,0);
   margin: 0;
