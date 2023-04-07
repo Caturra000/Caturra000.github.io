@@ -79,7 +79,7 @@ body {
   font-size: 18px;
   color: #525d67;
   background: #FFF;
-  font-family: "PT Serif", 'Times New Roman', Times, serif, "Lato","Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑","STHeiti","WenQuanYi Micro Hei",SimSun,sans-serif;
+  font-family: "PT Serif", 'Times New Roman', Times, serif, "Lato","Open Sans", Arial, "Noto Serif SC", SimSun, "Hiragino Sans GB", "Microsoft YaHei","微软雅黑","STHeiti","WenQuanYi Micro Hei",sans-serif;
   -webkit-font-smoothing: antialiased;
   -webkit-transform: translate3d(0,0,0);
   margin: 0;
