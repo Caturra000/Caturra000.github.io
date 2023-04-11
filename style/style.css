@@ -54,7 +54,7 @@ body {
 }
 
 h1,h2,h3,h4,h5,h6 {
-  margin: 20px 0;
+  margin: 40px 0;
   color: #9c9c9c;
 }
 
@@ -276,14 +276,12 @@ ul, ol {
 
 .content ul {
   /* list-style: initial; */
-  margin-top: -30px;
   margin-bottom: 0px;
   line-height: 2em;
 }
 
 .content ol {
   /* list-style: decimal; */
-  margin-top: -30px;
   margin-bottom: 0px;
   line-height: 2em;
 }
@@ -356,7 +354,7 @@ img {
 }
 
 .poster,.content p,.content ul,.date {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 
 .footer a:visited,.forb a:link,.suggest a:link,.forb a:visited,.suggest a:visited {
