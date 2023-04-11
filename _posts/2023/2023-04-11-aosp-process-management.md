@@ -264,7 +264,7 @@ trim memory level的分类和说明可以见[这里](https://cs.android.com/andr
 | `PERCEPTIBLE_MEDIUM_APP_ADJ`                 | 225        | This is a process **hosting services** that are not perceptible to the user but the client (system) binding to it requested to treat it as if it is perceptible and avoid killing it if possible. |
 | `PERCEPTIBLE_APP_ADJ`                        | 200        | This is a process **only hosting components that are perceptible to the user**, and we really want to avoid killing them, but they are not immediately visible. An example is background music playback. |
 | `VISIBLE_APP_ADJ`                            | 100        | This is a process **only hosting activities that are visible to the user**, so we'd prefer they don't disappear. |
-| `PERCEPTIBLE_RECENT_FOREGROUND_APP_ADJ`      | 50         | This is a process that was recently TOP and moved to FGS. Continue to treat it almost like a foreground app for a while. see TOP_TO_FGS_GRACE_PERIOD |
+| `PERCEPTIBLE_RECENT_`<br>`FOREGROUND_APP_ADJ`      | 50         | This is a process that was recently TOP and moved to FGS. Continue to treat it almost like a foreground app for a while. see TOP_TO_FGS_GRACE_PERIOD |
 | `FOREGROUND_APP_ADJ`                         | 0          | This is the process running the current foreground app. We'd really rather not kill it! |
 | `PERSISTENT_SERVICE_ADJ`                     | -700       | This is a process that the system or a persistent process has bound to, and indicated it is important. |
 | `PERSISTENT_PROC_ADJ`                        | -800       | This is a system persistent process, such as telephony. Definitely don't want to kill it, but doing so is not completely fatal. |
@@ -322,7 +322,9 @@ trim memory level的分类和说明可以见[这里](https://cs.android.com/andr
 
 ![adj2](/img/aosp-process-management-adj2.png)
 
-当`OOM adjuster`计算完成后，`ProcessRecord`对应的`adj`和`state`将会更新，后续会将`adj`通过`apply`操作下发到`lowmemorykiller`：[caller](https://cs.android.com/android/platform/superproject/+/android-13.0.0_r18:frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java;l=2596)和[callee](https://cs.android.com/android/platform/superproject/+/android-13.0.0_r18:frameworks/base/services/core/java/com/android/server/am/ProcessList.java;l=1407)见链接高亮处，其关键是使用`LMK_PROPRIO`的报文头与`lowmemorykiller`进行`socket`通信。交接给`lowmemorykiller`后，`framework`的工作先到此为止了！
+当`OOM adjuster`计算完成后，`ProcessRecord`对应的`adj`和`state`将会更新，后续会将`adj`通过`apply`操作下发到`lowmemorykiller`：[caller](https://cs.android.com/android/platform/superproject/+/android-13.0.0_r18:frameworks/base/services/core/java/com/android/server/am/OomAdjuster.java;l=2596)和[callee](https://cs.android.com/android/platform/superproject/+/android-13.0.0_r18:frameworks/base/services/core/java/com/android/server/am/ProcessList.java;l=1407)见链接高亮处，其关键是使用`LMK_PROPRIO`的报文头与`lowmemorykiller`进行`socket`通信
+
+交接给`lowmemorykiller`后，`framework`的工作先到此为止了！
 
 
 
