@@ -268,14 +268,22 @@ ul, ol {
   margin-bottom: 30px;
 }
 
-.content ul,li {
+.content li {
   /* list-style: initial; */
+  margin-bottom: 0px;
+  line-height: 2em;
+}
+
+.content ul {
+  /* list-style: initial; */
+  margin-top: -30px;
   margin-bottom: 0px;
   line-height: 2em;
 }
 
 .content ol {
   /* list-style: decimal; */
+  margin-top: -30px;
   margin-bottom: 0px;
   line-height: 2em;
 }
@@ -403,16 +411,35 @@ img {
 /* table */
 
 .content table {
-  margin-bottom: 25px;
-  width: 100%;
+	border-collapse: collapse;
+	margin: 0 0 1.5em;
+	width: 100%;
 }
 
-.content table thead {
-  border-bottom: 2px solid #ecf0f1;
+.content thead th {
+	border-bottom: 2px solid #bbb;
+	padding-bottom: 0.5em;
 }
 
-.content table thead tr th:first-child {
-  width: 250px;
+.content th {
+	padding: 0.4em;
+	text-align: left;
+}
+
+.content tr {
+	border-bottom: 1px solid #eee;
+}
+
+.content td {
+	padding: 0.4em;
+}
+
+.content th:first-child, td:first-child {
+	padding-left: 0;
+}
+
+.content th:last-child, td:last-child {
+	padding-right: 0;
 }
 
 .justtitle a:hover {
