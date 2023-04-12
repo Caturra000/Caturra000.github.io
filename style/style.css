@@ -294,7 +294,6 @@ code {
   box-shadow: inset 1px 1px #FFF;
   background: #FFF;
   color: #6b747f;
-  margin: 0 5px 0 5px;
 }
 
 pre {
@@ -416,11 +415,9 @@ img {
 
 .content thead th {
 	border-bottom: 2px solid #bbb;
-	padding-bottom: 0.5em;
 }
 
 .content th {
-	padding: 0.4em;
 	text-align: left;
 }
 
