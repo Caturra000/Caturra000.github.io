@@ -414,6 +414,7 @@ img {
 }
 
 .content thead th {
+  padding-left: 0.4em;
 	border-bottom: 2px solid #bbb;
 }
 
