@@ -120,7 +120,7 @@ int main() {
 
  
 
-广告：[实现一个简单的协程 – Caturra's blog](/posts/implements-coroutine/)
+广告：[实现一个简单的协程 – Caturra's blog](/archives/implements-coroutine/)
 
 我在之前写过一篇实现协程轮子（有栈协程）的文章，里面有一些关于协程的基本概念，各位客官对协程不太熟悉的话可以看看
 

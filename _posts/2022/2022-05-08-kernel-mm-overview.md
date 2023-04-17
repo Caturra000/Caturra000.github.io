@@ -234,7 +234,7 @@ kernel是通过一个`struct mm_struct`的数据结构来维护单个进程的�
 
  
 
-而kernel存在一种广为人知的内存映射方式`mmap`，用途广泛（（文件|匿名）和（共享|私有）的组合），其中一种操作就是把文件挂到内存上
+而kernel存在一种广为人知的内存映射方式`mmap`，用途广泛（`file | anonymous`和`shared | private`的组合），其中一种操作就是把文件挂到内存上
 
  
 

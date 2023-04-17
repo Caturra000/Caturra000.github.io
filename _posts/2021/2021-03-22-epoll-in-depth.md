@@ -306,7 +306,7 @@ typedef void (*poll_queue_proc)(struct file *, wait_queue_head_t *, struct poll_
 
 那`epoll`是不是这么干的？显然没这么蠢：
 
-1. 假设要监听$N$个`fd`，要想知道是否就绪，这种实现是$O(N)$，因为需要逐步遍历，而`epoll`可以做到$O(1)$
+1. 假设要监听$$N$$个`fd`，要想知道是否就绪，这种实现是$$O(N)$$，因为需要逐步遍历，而`epoll`可以做到$$O(1)$$
 2. 每次操作都要拷贝整个`fds`数组到内核态，`epoll`可以按需拷贝（绝对不拷贝是不可能的）
 
 `epoll`不仅比上面的实现更为高效，而且还有更多高级特性：
@@ -1329,7 +1329,7 @@ static __poll_t ep_send_events_proc(struct eventpoll *ep, struct list_head *head
 
 `epoll`的实现对比之前上文提到的低配版实现，其实是通过很简单的方式来做到高效
 
-1. 每次检查`vfspoll`只在`ready-list`上检查，而不遍历所有关注的事件，只要$O(1)$判断`ready-list`为空就知道必然没有就绪事件
+1. 每次检查`vfspoll`只在`ready-list`上检查，而不遍历所有关注的事件，只要$$O(1)$$判断`ready-list`为空就知道必然没有就绪事件
 2. 通过分出`epoll_ctl`和`epoll_wait`接口，并内部维护容器（红黑树）来避免每次调用都全盘拷贝
 
 ### 哪些文件支持epoll

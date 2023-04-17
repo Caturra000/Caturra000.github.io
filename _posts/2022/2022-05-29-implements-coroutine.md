@@ -14,7 +14,7 @@ categories: [C++, arch, 轮子, Operating System]
 
 写都写了，那还是无责任放出来吧，内容质量我不管
 
-（“随便”指的是轮子本身造的简单，而不是说我写代码很随意）
+> *随便*指的是轮子本身造的简单，而不是说我写bug很随便
 
 
 ## 什么是协程
@@ -150,7 +150,7 @@ PS. 为了简单，协程的实现不考虑跨平台，只考虑：
 
 下面的汇编层面展示会用到godbolt.org
 
-这是一个很不错的编译器调试网站，所见即所得
+> 这是一个很不错的编译器调试网站，所见即所得
 
  
 
@@ -193,7 +193,7 @@ PS. 为了简单，协程的实现不考虑跨平台，只考虑：
 
 而`pop <any>`操作则相反
 
- 
+-------------
 
 在复杂的嵌套场合中（比如`foo`，里面还需要进一步调用`bar`）
 
@@ -221,7 +221,7 @@ PS. 为了简单，协程的实现不考虑跨平台，只考虑：
 
 那么当调用一个函数时，到底怎样才能把传参传递给对应的函数？（callee怎么从caller里拿数据？）
 
-其实这个debug一下很容易知道
+其实这个不看ABI文档的话，debug一下也很容易知道
 
  
 
@@ -328,10 +328,10 @@ int main()
 
 `call <函数调用地址>`指令可认为是：
 
-- `push <%rip的下一行（当前call【代码】地址的下一行）>`
+- `push %rip`
 - `jmp <函数调用地址>`
 
- 
+> 此时`%rip`指向当前call**代码**地址的下一行
 
 而搭配的`ret`则是反操作：
 
@@ -536,7 +536,7 @@ private:
     char _stack[STACK_SIZE];
 };
 
-// prepare用于填充ret和rdi，实际上是放到
+// prepare用于填充ret和rdi
 void Context::prepare(Context::Callback ret, Context::Word rdi) {
     Word sp = getSp();
     fillRegisters(sp, ret, rdi);
@@ -561,7 +561,7 @@ Context::Word Context::getSp() {
 }
 
 // 这里从上面的汇编教程看出，当前运行时寄存器`%rdi`值为`previous`指针，`%rsi`为`this`指针
-// contextSwitch(previous, next)表示从previous上下文切换到next(this)上下文
+// contextSwitch(previous, next)表示从previous上下文切换到next(既this)上下文
 void Context::switchFrom(Context *previous) {
     contextSwitch(previous, this);
 }
@@ -602,7 +602,7 @@ void Context::switchFrom(Context *previous) {
 
 这里`rax`不作为返回值使用，而是作为`ret`返回地址的临时存储
 
-rsp记录的是伪造栈尾部的地址，rax存的是callWhenFinish的地址，因此记为ret
+`rsp`记录的是伪造栈尾部的地址，rax存的是`callWhenFinish`的地址，因此记为`ret`
 
  
 
@@ -617,8 +617,8 @@ contextSwitch:
     movq %rbx, 96(%rdi)
     movq %rcx, 88(%rdi)
     movq %rdx, 80(%rdi)
-    movq 0(%rax), %rax ;;;
-    movq %rax, 72(%rdi) ;;
+    movq 0(%rax), %rax
+    movq %rax, 72(%rdi)
     movq %rsi, 64(%rdi)
     movq %rdi, 56(%rdi)
     movq %rbp, 48(%rdi)
@@ -631,7 +631,7 @@ contextSwitch:
     xorq %rax, %rax
 
     movq 48(%rsi), %rbp
-    movq 104(%rsi), %rsp ;;
+    movq 104(%rsi), %rsp
     movq (%rsi), %r15
     movq 8(%rsi), %r14
     movq 16(%rsi), %r13
@@ -643,7 +643,7 @@ contextSwitch:
     movq 88(%rsi), %rcx
     movq 96(%rsi), %rbx
     addq $8, %rsp
-    pushq 72(%rsi) ;;
+    pushq 72(%rsi)
 
     movq 64(%rsi), %rsi
     ret
@@ -675,12 +675,61 @@ contextSwitch:
 
 ![lambda](/img/lambda.png)
 
-## update. 22.5.31
+## update. 22.7.14
 
-我对contextSwitch做出一些小改动
+我对`contextSwitch`做出一些小改动，现在支持内联汇编，不再需要`.S`文件
 
-原来的微信实现有些地方太绕了，重新利用%rax使得过程更加清晰
+```C++
+// 关于attribute：
+// 1. 必须要no inline，保证rdi和rsi传递，否则很容易代码层面地inline（导致rsi没传递）
+// 2. weak保证C++ inline作用，既weak符号，用于header-only库
+// 3. optimize("O3")相当于即使你用O0编译整个程序，这一段代码也会用O3去编，
+//    因为O0会生成多余的push/pop指令导致crash
+extern "C" __attribute__((noinline, weak, optimize("O3")))
+void contextSwitch(Context* prev /*%rdi*/, Context *next /*%rsi*/) {
+    asm volatile(R"(
+        movq %rsp, %rax
+        movq %rax, 104(%rdi)
+        movq %rbx, 96(%rdi)
+        movq %rcx, 88(%rdi)
+        movq %rdx, 80(%rdi)
+        movq 0(%rax), %rax
+        movq %rax, 72(%rdi)
+        movq %rsi, 64(%rdi)
+        movq %rdi, 56(%rdi)
+        movq %rbp, 48(%rdi)
+        movq %r8, 40(%rdi)
+        movq %r9, 32(%rdi)
+        movq %r12, 24(%rdi)
+        movq %r13, 16(%rdi)
+        movq %r14, 8(%rdi)
+        movq %r15, (%rdi)
 
-也避免了rsp向上走这种危险操作（比如来了一个信号，直接把rsp往下给盖没了，虽然目前的实现也不多保证信号处理是否正常）
+        movq 48(%rsi), %rbp
+        movq 104(%rsi), %rsp
+        movq (%rsi), %r15
+        movq 8(%rsi), %r14
+        movq 16(%rsi), %r13
+        movq 24(%rsi), %r12
+        movq 32(%rsi), %r9
+        movq 40(%rsi), %r8
+        movq 56(%rsi), %rdi
+        movq 72(%rsi), %rax
+        movq 80(%rsi), %rdx
+        movq 88(%rsi), %rcx
+        movq 96(%rsi), %rbx
 
-[avoid adding %rsp · Caturra000/co@def410c (github.com)](https://github.com/Caturra000/co/commit/def410c709e0b8364e33f0b932f31bc124b63768)
+        movq 64(%rsi), %rsi
+
+        movq %rax, (%rsp)
+        xorq %rax, %rax
+    )");
+    // 这里由gcc直接生成ret指令
+}
+```
+
+[add header-only version · Caturra000/co@242d7e4](https://github.com/Caturra000/co/commit/242d7e462c999e6d2f6fe56488f0598f668629c4)
+
+还有增加了一些`POSIX`接口的协程适配，比如`co::read`
+
+这部分就不介绍了，感兴趣看看代码吧：[posix.h](https://github.com/Caturra000/co/blob/master/co/posix.h)
