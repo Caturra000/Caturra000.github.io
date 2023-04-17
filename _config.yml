@@ -10,3 +10,7 @@ author:
 
 kramdown:
   math_engine: katex
+
+url: "https://Caturra000.github.io"
+plugins:
+  - jekyll-sitemap
