@@ -101,7 +101,9 @@ DirectMap4M:      897024 kB
 
 在`man top`能找到这一句话：
 
-> %MEM - simply RES divided by total physical memory
+```
+%MEM - simply RES divided by total physical memory
+```
 
 total physical memory是很好理解的。但是RES是什么？再往下看：
 
@@ -113,14 +115,14 @@ RES  - anything occupying physical memory
 
 ```
 
-          RES  - anything occupying physical memory which, beginning with
-                 Linux-4.5, is the sum of the following three fields:
-                 RSan - quadrant 1 pages, which include any
-                        former quadrant 3 pages if modified
-                 RSfd - quadrant 3 and quadrant 4 pages
-                 RSsh - quadrant 2 pages
+    RES  - anything occupying physical memory which, beginning with
+            Linux-4.5, is the sum of the following three fields:
+            RSan - quadrant 1 pages, which include any
+                former quadrant 3 pages if modified
+            RSfd - quadrant 3 and quadrant 4 pages
+            RSsh - quadrant 2 pages
 
-----------------------
+...
 
        For each such process, every memory page is restricted to a single quadrant from the table below.  Both physi‐
        cal  memory  and  virtual memory can include any of the four, while the swap file only includes #1 through #3.
@@ -144,7 +146,7 @@ RES  - anything occupying physical memory
            See `OVERVIEW, Linux Memory Types' for additional details.
 
 
---------------------
+...
 
        23. RSan  --  Resident Anonymous Memory Size (KiB)
            A subset of resident memory (RES) representing private pages not mapped to a file.
@@ -246,7 +248,7 @@ enum {
 > 可以直接拿到手，且是明显的加法关系
 > 
 > ```
-> VmRSS:       956 kB
+> VmRSS:               956 kB
 > RssAnon:             480 kB
 > RssFile:             476 kB
 > RssShmem:              0 kB
@@ -298,40 +300,40 @@ DESCRIPTION
 
 - 所有的值讨论的都是物理内存，而不是只分配不映射的虚拟内存
 
-- 具有简单映射关系的值有total /     free / shared / buffers
+- 具有简单映射关系的值有`total` / `free` / `shared` / `buffers`
 
-  - total对应于MemTotal + SwapTotal
-  - free对应于MemFree + SwapFree
-  - shared对应于Shmem
-  - buffers对应于Buffers
+  - `total`对应于`MemTotal` + `SwapTotal`
+  - `free`对应于`MemFree` + `SwapFree`
+  - `shared`对应于`Shmem`
+  - `buffers`对应于`Buffers`
 
-- cache包含page     cache和slab对象，是Cached和SReclaimable的映射
+- `cache`包含page cache和slab对象，是`Cached`和`SReclaimable`的映射
 
-- used就是所剩余的值，既total - free - shared - buffers - cache
+- `used`就是所剩余的值，既`total` - `free` - `shared` - `buffers` - `cache`
 
-- available是一个估算出来的可用内存值
+- `available`是一个估算出来的可用内存值
 
-  - 为什么不用free作为可用值？因为无关紧要的cache可以回收
-  - 为什么不用free + cache作为可用值？因为不是所有的cache都能回收
+  - 为什么不用`free`作为可用值？因为无关紧要的cache可以回收
+  - 为什么不用`free` + `cache`作为可用值？因为不是所有的cache都能回收
   - 为什么要估算？不能准确计算吗？因为内存的类型很复杂
-  - 它还揭露了一个复杂的问题：reclaimable并不是真的全部都可以reclaimable
+  - 它还揭露了一个复杂的问题：`reclaimable`并不是真的全部都可以reclaimable
 
 从`free`映射到`meminfo`的表如下所示：
 
 | free域     | meminfo域                        | **说明**                                                     |
 | ---------- | -------------------------------- | ------------------------------------------------------------ |
-| total      | MemTotal + SwapTotal             |                                                              |
-| used       | ~                                | used指total减去(free+shared+buffers+cache)                   |
-| free       | MemFree + SwapFree               |                                                              |
-| shared     | Shmem                            | 虽然作者说是大多来自Shmem，但其实[代码](https://gitlab.com/procps-ng/procps/-/blob/0e98e0677752272405652fd0cb1b73933236f873/library/meminfo.c#L203)上（还有[这里](https://gitlab.com/procps-ng/procps/-/blob/0e98e0677752272405652fd0cb1b73933236f873/src/free.c#L383)）就是只算Shmem |
-| buffers    | Buffers                          | 作者的解释是kernel buffer，其实这是很含糊的，具体来说是块设备的cache |
-| cache      | Cached  + SReclaimable           | Cached作为page  cache大小，但是SReclaimable并不是slab全部    |
-| buff/cache | Buffers  + Cached + SReclaimable | 就是一个buffers+cache的总和                                  |
-| available  | MemAvaliable                     | 这是一个用算法得到的估算值                                   |
+| `total`      | `MemTotal` + `SwapTotal`             |                                                              |
+| `used`       | ~                                | used指total减去(free+shared+buffers+cache)                   |
+| `free`       | `MemFree` + `SwapFree`               |                                                              |
+| `shared`     | `Shmem`                            | 虽然作者说是大多来自Shmem，但其实[代码](https://gitlab.com/procps-ng/procps/-/blob/0e98e0677752272405652fd0cb1b73933236f873/library/meminfo.c#L203)上（还有[这里](https://gitlab.com/procps-ng/procps/-/blob/0e98e0677752272405652fd0cb1b73933236f873/src/free.c#L383)）就是只算Shmem |
+| `buffers`    | `Buffers`                          | 作者的解释是kernel buffer，其实这是很含糊的，具体来说是块设备的cache |
+| `cache`      | `Cached` + `SReclaimable`           | Cached作为page  cache大小，但是SReclaimable并不是slab全部    |
+| `buff/cache` | `Buffers` + `Cached` + `SReclaimable` | 就是一个buffers+cache的总和                                  |
+| `available`  | `MemAvaliable`                     | 这是一个用算法得到的估算值                                   |
 
 > 注：man手册中并没有说到lo和hi，其实这个是HIGHMEM模型的问题，已经是过去的历史了
 
- 
+> 注：在过去的版本中，`used`虽然是个具体值，但并没有过多参考价值。因此在新版本的实现中，改为估算值`used = total - available`
 
 总结：`free`来自`meminfo`，想要知道本质，就解读`meminfo`吧
 
@@ -378,6 +380,8 @@ DESCRIPTION
 | `VmallocTotal`          | vmalloc()                                                    |                                                              |
 | `VmallocUsed`           | used  vmalloc()                                              |                                                              |
 | `VmallocChunk`          | largest  contiguous and free vmalloc()                       |                                                              |
+
+> 注：关于MemAvailable的计算可以参考这里：[RTFSC/MemAvailable统计](https://github.com/Caturra000/RTFSC/blob/master/linux/mm/meminfo/MemAvailable%E7%BB%9F%E8%AE%A1.c)
 
 另外我也写了一个`meminfo parser`来解析这些参数：
 
