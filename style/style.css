@@ -141,7 +141,7 @@ a {
 }
 
 .content, blockquote {
-  line-height: 2.5em;
+  line-height: 2.0em;
   color: #000000;
 }
 
@@ -158,9 +158,9 @@ a {
   border-radius: 4px;
 }
 
-blockquote p {
+p {
   font-weight: 400;
-  line-height: 2.3em;
+  line-height: 1.7em;
 }
 
 .more .title {
@@ -202,7 +202,6 @@ blockquote p {
 
 blockquote {
   border-left: 5px solid #f1f1f1;
-  margin-bottom: 30px;
   font-size: 15px;
 }
 
@@ -352,8 +351,9 @@ img {
   margin-left: -10px;
 }
 
-.poster,.content p,.content ul,.date {
-  margin-bottom: 0px;
+.poster, .content p, .date {
+  margin-bottom: 1em;
+  margin-top: 0.6em;
 }
 
 .footer a:visited,.forb a:link,.suggest a:link,.forb a:visited,.suggest a:visited {
