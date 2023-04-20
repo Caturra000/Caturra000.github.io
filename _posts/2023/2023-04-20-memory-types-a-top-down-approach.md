@@ -299,20 +299,14 @@ DESCRIPTION
 其中：
 
 - 所有的值讨论的都是物理内存，而不是只分配不映射的虚拟内存
-
 - 具有简单映射关系的值有`total` / `free` / `shared` / `buffers`
-
   - `total`对应于`MemTotal` + `SwapTotal`
   - `free`对应于`MemFree` + `SwapFree`
   - `shared`对应于`Shmem`
   - `buffers`对应于`Buffers`
-
 - `cache`包含page cache和slab对象，是`Cached`和`SReclaimable`的映射
-
 - `used`就是所剩余的值，既`total` - `free` - `shared` - `buffers` - `cache`
-
 - `available`是一个估算出来的可用内存值
-
   - 为什么不用`free`作为可用值？因为无关紧要的cache可以回收
   - 为什么不用`free` + `cache`作为可用值？因为不是所有的cache都能回收
   - 为什么要估算？不能准确计算吗？因为内存的类型很复杂
