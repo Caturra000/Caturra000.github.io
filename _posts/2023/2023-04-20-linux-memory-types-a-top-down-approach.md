@@ -1,12 +1,12 @@
 ---
 layout: post
-title: 自顶向下了解内存类型
+title: Linux内存类型：自顶向下方法
 categories: [Memory, kernel]
 ---
 
 ## 前前言
 
-这是一篇翻新的旧文，自己回顾用
+这是一篇翻新的旧文，自己回顾用。另外，标题风格只是neta某本CS经典书籍，没别的意思
 
 ## 前言
 
