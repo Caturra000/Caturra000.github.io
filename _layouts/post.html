@@ -57,7 +57,9 @@
 <div class="container">
 
 <div class="main clearfix">
-  <div class="title" itemprop="name">{{ page.title }}</div>
+  <div class="title" itemprop="name">
+    <a href="/archives">{{ page.title }}</a>
+  </div>
   <div class="hidden" itemprop="author">Caturra</div>
   <div class="hidden" itemprop="description">{{ page.description }}</div>
 
@@ -72,7 +74,12 @@
 </article>
 
 </div>
-{% include footer.html %}
+
+<div class="footer">
+  <a href="/archives">🔙</a>
+  <a href="javascript:scroll(0,0)">🔝</a>
+</div>
+
 <!--KaTeX-->
 <link rel="stylesheet" href="/style/katex/katex.min.css">
 <script defer src="/style/katex/katex.min.js"></script>
