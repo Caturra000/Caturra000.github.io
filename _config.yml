@@ -11,6 +11,5 @@ author:
 kramdown:
   math_engine: katex
 
-url: "https://caturra.cc"
 plugins:
   - jekyll-sitemap
