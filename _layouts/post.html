@@ -2,7 +2,7 @@
 <html>
 <!-- <html> -->
 <head>
-  <link rel="shortcut icon" href="/img/favicon.png" />
+  <meta http-equiv='content-language' content='zh-cn'>
   <title>{{ page.title }} | {{ site.title }}</title>
   {% include header.html %}
   <script type="text/javascript">
@@ -32,12 +32,10 @@
     return false;
     }
   </script>
-  <meta content="{{ page.description }}" name="description"/>
-  <meta content="{% for tag in page.tags %}{{ tag }},{% endfor %}" name="keywords"/>
+  <meta content="{% for category in page.categories %}{{ category }},{% endfor %}" name="keywords"/>
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="{{ site.url }}/{{ page.url }}" />
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
   <meta property="og:title" content="{{ page.title }}" />
-  <meta property="og:description" content="{{ page.description }}" />
 
   <!-- code prettify-->
   <script type='text/javascript'>
@@ -60,6 +58,7 @@
   <div class="title" itemprop="name">
     <a href="/archives">{{ page.title }}</a>
   </div>
+  <div class="hidden" itemprop="title"><h1>{{ page.title }}</h1></div>
   <div class="hidden" itemprop="author">Caturra</div>
   <div class="hidden" itemprop="description">{{ page.description }}</div>
 
