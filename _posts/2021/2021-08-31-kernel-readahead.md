@@ -2,6 +2,7 @@
 layout: post
 title: 浅谈Linux Kernel的预读算法
 categories: [kernel, RTFSC]
+description: 性能优化的关键在于解决性能的瓶颈，而IO从来都是难以解决的瓶颈之一。这篇文章主要描述Linux Kernel对于读操作下的按需预读算法，包括流程和实现
 ---
 
 性能优化的关键在于解决性能的瓶颈，而IO从来都是难以解决的瓶颈之一

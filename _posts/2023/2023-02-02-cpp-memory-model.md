@@ -2,6 +2,7 @@
 layout: post
 title: 浅谈C++内存模型
 categories: [C++, Concurrency]
+description: 本文章是从较为实际的角度去分析C++内存模型，涉及到memory order，modification order和release sequence
 ---
 
 ## 声明

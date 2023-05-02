@@ -1,7 +1,8 @@
 ---
 layout: post
-title: CSAPP第七章笔记
+title: CSAPP第七章笔记：链接过程
 categories: [Linkage, Operating System]
+description: CSAPP第7章就是用来讲解链接过程的，比较适合整理总结，因此做一遍笔记
 ---
 
 <!--more-->

@@ -2,6 +2,7 @@
 layout: post
 title: epoll in depth
 categories: [kernel, RTFSC]
+description: 由于要做年轻人的第一次技术分享，因此我挑了个`epoll`实现原理作为课题，主要是先做下快速介绍，然后直接杠源码（长篇大论没人听警告）
 ---
 
 由于要做年轻人的第一次技术分享，因此我挑了个`epoll`实现原理作为课题，主要是先做下快速介绍，然后直接杠源码（长篇大论没人听警告）

@@ -2,6 +2,7 @@
 layout: post
 title: Codeforces - 71E 状压DP
 categories: [ICPC]
+description: Codeforces - 71E 状压DP 参考官方题解
 ---
 
 <!--more-->

@@ -2,6 +2,7 @@
 layout: post
 title: PSYCHO-PASS 台词摘录
 categories: [摘录]
+description: PSYCHO-PASS 台词摘录 TV第一季
 ---
 
 TV第一季

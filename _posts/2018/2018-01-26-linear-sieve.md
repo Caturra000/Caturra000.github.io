@@ -2,6 +2,7 @@
 layout: post
 title: 线性筛小总结
 categories: [ICPC]
+description: 线性筛的思想是每个数只会被筛一遍，因此时间复杂度是线性的（实际全局vis是大于n的，但以每个数的遍历次数来说恰好是1）
 ---
 
 <!--more-->

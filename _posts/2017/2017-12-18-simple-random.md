@@ -2,6 +2,7 @@
 layout: post
 title: 简易随机数
 categories: [ICPC]
+description: 简易随机数实现，实测手动实现1e7范围比内置快3倍左右
 ---
 
 实测手动实现1e7范围比内置快3倍左右

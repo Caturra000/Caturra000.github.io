@@ -2,6 +2,7 @@
 layout: post
 title: The Witcher 3 opening narration
 categories: [摘录]
+description: 巫师3开场翻译
 ---
 
 <!--more-->

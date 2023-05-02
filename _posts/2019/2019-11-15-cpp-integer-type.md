@@ -2,6 +2,7 @@
 layout: post
 title: 「无用知识」C/C++中的类int类型
 categories: [C++]
+description: 类int类型考古
 ---
 
 <!--more-->

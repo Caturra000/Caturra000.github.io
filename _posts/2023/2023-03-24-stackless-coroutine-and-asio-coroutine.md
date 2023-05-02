@@ -2,6 +2,7 @@
 layout: post
 title: 从switch-case飞线，到无栈协程和asio协程的实现
 categories: [C++, RTFSC]
+description: 这篇文章简单描述asio怎样实现一个无栈协程
 ---
 
 <!--more-->

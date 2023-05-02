@@ -1,7 +1,8 @@
 ---
 layout: post
-title: 又一个RPC轮子
+title: 实现一个RPC轮子
 categories: [C++, 轮子]
+description: 当你想造一个轮子时，你发现需要为这个轮子再造另一个轮子
 ---
 
 当你想造一个轮子时，你发现需要为这个轮子再造另一个轮子

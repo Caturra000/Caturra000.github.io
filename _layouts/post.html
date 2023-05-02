@@ -32,10 +32,12 @@
     return false;
     }
   </script>
+  <meta content="{{ page.description }}" name="description"/>
   <meta content="{% for category in page.categories %}{{ category }},{% endfor %}" name="keywords"/>
   <meta property="og:type" content="article" />
   <meta property="og:url" content="{{ site.url }}{{ page.url }}" />
   <meta property="og:title" content="{{ page.title }}" />
+  <meta property="og:description" content="{{ page.description }}" />
 
   <!-- code prettify-->
   <script type='text/javascript'>

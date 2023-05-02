@@ -2,6 +2,7 @@
 layout: post
 title: 「草稿」 ptmalloc的一些参数
 categories: [Memory, Operating System]
+description: 本文贴一些ptmalloc（glibc2.31版本）简单的参数，以及用到的便利函数
 ---
 
 <!--more-->

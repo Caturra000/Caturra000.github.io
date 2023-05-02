@@ -2,6 +2,7 @@
 layout: post
 title: KMP / exKMP / AC自动机教程
 categories: [Algorithms]
+description: KMP / exKMP / AC自动机教程
 ---
 
 ## 定义1

@@ -2,6 +2,7 @@
 layout: post
 title: 像位运算一样构造tuple
 categories: [C++]
+description: 使用位运算写`flag`是一种很直观优雅的做法，但是存在问题
 ---
 
 <!--more-->

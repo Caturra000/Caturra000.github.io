@@ -2,6 +2,8 @@
 layout: post
 title: AOSP的进程管理
 categories: [Process, RTFSC, Operating System]
+description: 本文尝试从进程本身及其生命周期角度去描述`AOSP`众多的进程管理机制：包括进程状态及其容器、`oom adjuster`、
+             `memory factor`和`userspace lowmemorykiller`。话题比较宽泛，所以也说不上多深入，算是给自己写份一卷完结的笔记
 ---
 
 

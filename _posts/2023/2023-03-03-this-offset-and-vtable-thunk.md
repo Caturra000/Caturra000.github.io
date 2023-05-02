@@ -2,6 +2,7 @@
 layout: post
 title: 反汇编调研this offset和vtable thunk
 categories: [C++]
+description: 在类设计含有多重继承的内存布局下，对象的`this`指针是存在编译器隐含的偏移修正行为
 ---
 
 ## TL;DR

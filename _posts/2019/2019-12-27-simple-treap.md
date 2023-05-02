@@ -2,6 +2,7 @@
 layout: post
 title: 非常简洁的无旋Treap教程
 categories: [Algorithms]
+description: 无旋Treap是一个非常精简的平衡树，定义也挺简单的，旨在替代splay等反人类旋转树
 ---
 
 无旋Treap是一个非常精简的平衡树，定义也挺简单的，旨在替代splay等反人类旋转树

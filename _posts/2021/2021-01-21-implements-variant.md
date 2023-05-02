@@ -2,6 +2,7 @@
 layout: post
 title: 实现一个variant
 categories: [C++, 轮子]
+description: 首先你要知道什么是`variant`，还有它的好伙伴`visitor`
 ---
 
 ## 前置

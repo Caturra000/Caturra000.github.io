@@ -2,6 +2,7 @@
 layout: post
 title: CodeChef - NWAYS 组合数 朱世杰恒等式
 categories: [ICPC]
+description: 题意:求$$\sum_{i=1}^n\sum_{j=1}^n{|i-j|+k \choose k}$$
 ---
 
 题意:求$$\sum_{i=1}^n\sum_{j=1}^n{|i-j|+k \choose k}$$

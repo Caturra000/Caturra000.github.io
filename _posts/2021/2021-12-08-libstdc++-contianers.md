@@ -2,6 +2,7 @@
 layout: post
 title: 「时局图」libstdc++的实现
 categories: [C++, RTFSC]
+description: 不言而喻，一目了然
 ---
 
 不言而喻，一目了然

@@ -2,6 +2,7 @@
 layout: post
 title: PAXOS小记
 categories: [Distributed System]
+description: PAXOS小记 随便敲的，看看就好
 ---
 
 随便敲的，看看就好（被书折腾后凭感觉写的，可能小误

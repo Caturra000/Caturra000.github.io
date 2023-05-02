@@ -2,6 +2,7 @@
 layout: post
 title: 使用CRTP实现编译期接口定义
 categories: [C++]
+description: 使用CRTP实现编译期接口定义
 ---
 
 > `CRTP`：吾与城北`virtual`孰美？

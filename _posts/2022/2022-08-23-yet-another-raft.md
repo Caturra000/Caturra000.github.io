@@ -1,7 +1,8 @@
 ---
 layout: post
-title: 又一个raft实现
+title: 实现一个raft协议
 categories: [C++, 轮子]
+description: 写了一个C++实现的raft，这里就简单做些记录
 ---
 
 写了一个C++实现的raft，这里就简单做些记录

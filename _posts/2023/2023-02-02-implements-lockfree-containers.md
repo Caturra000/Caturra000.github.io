@@ -2,6 +2,7 @@
 layout: post
 title: 实现lockfree容器：freelist，stack和queue
 categories: [C++, Concurrency, 轮子]
+description: 实现一个xyz系列算是本博客的月指活了，这次写的是lockfree容器
 ---
 
 实现一个xyz系列算是本博客的月指活了，这次写的是lockfree容器<del>（硬核程度越来越高，以后咋低成本水文章啊）</del>

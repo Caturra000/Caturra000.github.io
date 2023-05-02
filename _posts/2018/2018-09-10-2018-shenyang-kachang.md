@@ -2,6 +2,7 @@
 layout: post
 title: 2018沈阳网络赛 - Ka Chang KD树暴力
 categories: [ICPC]
+description: 题意：给你一棵树，n个点q次操作，操作1查询x子树深度为d的节点权值和，操作2查询子树x权值和
 ---
 
 题意：给你一棵树，n个点q次操作，操作1查询x子树深度为d的节点权值和，操作2查询子树x权值和

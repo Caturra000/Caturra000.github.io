@@ -2,6 +2,7 @@
 layout: post
 title: 网络流模板
 categories: [ICPC]
+description: 网络流模板ISAP和MCMF
 ---
 
 <!--more-->

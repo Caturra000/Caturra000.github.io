@@ -2,6 +2,7 @@
 layout: post
 title: mm模块简单总结
 categories: [Memory, kernel]
+description: 看memory management永远不知道水有多深
 ---
 
 看memory management永远不知道水有多深

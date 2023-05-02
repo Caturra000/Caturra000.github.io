@@ -2,6 +2,7 @@
 layout: post
 title: 「逐渐变态」实现编译时排序
 categories: [C++]
+description: 由于日志库的需求，需要一个编译时排序来处理tag（模板的typename只能append!），所以尝试写了一版
 ---
 
 由于日志库的需求，需要一个编译时排序来处理tag（模板的typename只能append!），所以尝试写了一版，工地C++选手头一回写这么一大串的template元编程

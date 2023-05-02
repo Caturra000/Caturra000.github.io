@@ -2,6 +2,7 @@
 layout: post
 title: 记录一些Linux Kernel下的「虚拟」文件系统的流程细节
 categories: [kernel, RTFSC]
+description: 本来是想把整个Linux IO栈都大概整理一遍，限于工作繁忙，也只是把VFS往下一点的流程粗略翻了遍
 ---
 
 本来是想把整个Linux IO栈都大概整理一遍，限于工作繁忙，也只是把VFS往下一点的流程粗略翻了遍

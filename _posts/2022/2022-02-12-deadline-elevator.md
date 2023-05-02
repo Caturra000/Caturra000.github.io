@@ -2,6 +2,7 @@
 layout: post
 title: 从deadline调度看elevator
 categories: [kernel, RTFSC]
+description: Linux内核中的elevator layer就是IO调度层 之所以把IO视为电梯，是因为它的物理特性和生活上的电梯差不多
 ---
 
 ## 前言

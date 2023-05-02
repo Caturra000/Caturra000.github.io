@@ -2,6 +2,7 @@
 layout: post
 title: FFT推导过程
 categories: [Algorithms]
+description: FFT推导过程
 ---
 
 所有考试总算考完了，于是我被L<sup>A</sup>J<sub>i</sub>学校坑去生产线QAQ

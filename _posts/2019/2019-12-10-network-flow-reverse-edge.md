@@ -2,6 +2,7 @@
 layout: post
 title: 「感性认识」网络流中反向边的正确性
 categories: [Algorithms]
+description: 众所周知，求最大流要是没有反向边，基本都是错的
 ---
 
 众所周知，求最大流要是没有反向边，基本都是错的
@@ -14,7 +15,7 @@ categories: [Algorithms]
 
 不过还是找到了PKU camp的PPT，感觉说的还不错，大概意思就是反向边可用于二路合并
 
-<img src="/img/back_edge-scaled-1-1.png" alt="" />
+![back edge](/img/back_edge-scaled-1-1.png)
 
 **（你刚才说我画的丑是吧）**
 

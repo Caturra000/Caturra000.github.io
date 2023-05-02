@@ -2,6 +2,7 @@
 layout: post
 title: 高精度模板
 categories: [ICPC]
+description: UVA12333
 ---
 
 UVA12333

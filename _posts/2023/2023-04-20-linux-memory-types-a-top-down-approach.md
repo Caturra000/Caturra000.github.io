@@ -2,6 +2,7 @@
 layout: post
 title: Linux内存类型：自顶向下方法
 categories: [Memory, kernel]
+description: 这是一篇翻新的旧文，自己回顾用。另外，标题风格只是neta某本CS经典书籍，没别的意思
 ---
 
 ## 前前言

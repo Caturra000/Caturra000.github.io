@@ -2,6 +2,7 @@
 layout: post
 title: 浅谈x86特定体系下的并发
 categories: [Concurrency, arch]
+description: 浅谈x86特定体系下的并发
 ---
 
 <!--more-->

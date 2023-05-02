@@ -2,6 +2,7 @@
 layout: post
 title: SPOJ - REPEATS RMQ循环节
 categories: [ICPC]
+description: 题意:求重复次数最多的重复子串(并非长度最长)
 ---
 
 题意:求重复次数最多的重复子串(并非长度最长)

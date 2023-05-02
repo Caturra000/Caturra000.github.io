@@ -2,6 +2,7 @@
 layout: post
 title: 数据库存储引擎的实现
 categories: [Database, 轮子]
+description: 简单记录一下这个拖了许久的小轮子
 ---
 
 简单记录一下这个拖了许久的小轮子

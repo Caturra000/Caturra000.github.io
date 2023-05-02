@@ -2,6 +2,7 @@
 layout: post
 title: 非常简洁的回文树教程
 categories: [Algorithms]
+description: 非常简洁的回文树教程
 ---
 
 ## 定义

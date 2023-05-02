@@ -2,6 +2,7 @@
 layout: post
 title: 一些经典互斥算法的实现
 categories: [Operating System]
+description: 虽然说是没啥卵用的东西，但学习证明它为什么是互斥的还是有点意思
 ---
 
 虽然说是没啥卵用的东西，但学习证明它为什么是互斥的还是有点意思

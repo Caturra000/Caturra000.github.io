@@ -2,6 +2,7 @@
 layout: post
 title: 非常简洁的后缀数组教程
 categories: [Algorithms]
+description: 非常简洁的后缀数组教程
 ---
 
 ## 定义

@@ -2,6 +2,7 @@
 layout: post
 title: 非常简洁的shift-and / shift-or教程
 categories: [Algorithms]
+description: 非常简洁的shift-and / shift-or教程
 ---
 
 $$shift-and$$字符串匹配算法适用于模式串长

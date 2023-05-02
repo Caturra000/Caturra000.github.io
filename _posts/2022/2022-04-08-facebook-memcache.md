@@ -2,6 +2,7 @@
 layout: post
 title: facebook memcache 论文阅读笔记
 categories: [System Design, paper]
+description: 这篇paper主要价值就是设计一个无敌的分布式kv
 ---
 
 这篇paper主要价值就是设计一个无敌的分布式kv

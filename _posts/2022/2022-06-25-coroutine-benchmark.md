@@ -2,6 +2,7 @@
 layout: post
 title: 你说的协程，它真的快吗
 categories: [C++, Operating System]
+description: 聊聊协程的适配与性能测试
 ---
 
 前段时间抱着玩票的性质搞了个协程库[co](https://github.com/Caturra000/co)

@@ -2,6 +2,7 @@
 layout: post
 title: 「氵」关于各种各样的memory
 categories: [Memory, kernel]
+description: 诈尸氵一篇meminfo
 ---
 
 （诈尸氵一篇meminfo）

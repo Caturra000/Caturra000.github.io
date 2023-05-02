@@ -2,6 +2,7 @@
 layout: post
 title: 高维前缀和笔记
 categories: [Algorithms]
+description: 高维前缀和笔记
 ---
 
 算是个小知识点吧
