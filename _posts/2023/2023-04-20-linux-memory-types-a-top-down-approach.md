@@ -43,7 +43,7 @@ Total:     42856760     8181684    34445724
 
 公司里的dump信息全靠`meminfo`。虽然`meminfo`有2套工具，但是看`proc`文件系统下的就足够了（`/proc/meminfo`）
 
-> 注：另一套是谷歌搞出来的，非硬通货，不看也罢
+> 注：另一套是谷歌搞出来的，反正我不用
 
 ```
 MemTotal:       16642364 kB
@@ -166,7 +166,7 @@ RES  - anything occupying physical memory
 > 注：`man`文档对`%MEM`的解释有些矛盾，一个是`RES`占比total physical，另一个是`RES`占比available physical，这是两个不同的概念（available很特殊）
 。有疑问不如看看源码是拿什么做除法的，但我相信是第一种说法，因为第二种没意义啊
 
-原来RES = resident share of available physical memory，字面意思就是可用物理内存的驻留份额
+原来RES = **re**sident **s**hare of available physical memory，字面意思就是可用物理内存的驻留份额
 
 简单点的理解就是RES会实际地占据物理内存
 
@@ -321,7 +321,7 @@ DESCRIPTION
 | `used`       | ~                                | used指total减去(free+shared+buffers+cache)                   |
 | `free`       | `MemFree` + `SwapFree`               |                                                              |
 | `shared`     | `Shmem`                            | 虽然作者说是大多来自Shmem，但其实[代码](https://gitlab.com/procps-ng/procps/-/blob/0e98e0677752272405652fd0cb1b73933236f873/library/meminfo.c#L203)上（还有[这里](https://gitlab.com/procps-ng/procps/-/blob/0e98e0677752272405652fd0cb1b73933236f873/src/free.c#L383)）就是只算Shmem |
-| `buffers`    | `Buffers`                          | 作者的解释是kernel buffer，其实这是很含糊的，具体来说是块设备的cache |
+| `buffers`    | `Buffers`                          | 作者的解释是kernel buffer，其实这是很含糊的，具体来说是块设备的page cache |
 | `cache`      | `Cached` + `SReclaimable`           | Cached作为page  cache大小，但是SReclaimable并不是slab全部    |
 | `buff/cache` | `Buffers` + `Cached` + `SReclaimable` | 就是一个buffers+cache的总和                                  |
 | `available`  | `MemAvaliable`                     | 这是一个用算法得到的估算值                                   |
@@ -377,6 +377,8 @@ DESCRIPTION
 | `VmallocChunk`          | largest  contiguous and free vmalloc()                       |                                                              |
 
 > 注：关于MemAvailable的计算可以参考这里：[RTFSC/MemAvailable统计](https://github.com/Caturra000/RTFSC/blob/master/linux/mm/meminfo/MemAvailable%E7%BB%9F%E8%AE%A1.c)
+
+> 注：附上一个影响Buffers统计的[调用栈](https://elixir.bootlin.com/linux/v6.0/source/fs/buffer.c#L192)，从文件页逻辑块到扇区的过程中缓存的pagecache会被算上
 
 另外我也写了一个`meminfo parser`来解析这些参数：
 
