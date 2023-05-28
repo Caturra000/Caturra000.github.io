@@ -103,11 +103,11 @@ void reader() {
 
 ## 同步关系
 
-同步关系能限制一个原子变量能读到的值，而且具有可传递性，构成线程间的线性关系（inter-thread happens-before）
+同步关系能限制一个原子变量能读到的值，而且具有可传递性，构成线程间的先行关系（inter-thread happens-before）
 
  
 
-同步关系相比线性关系，性质比较特殊：
+同步关系相比先行关系，性质比较特殊：
 - 只作用于**同一个原子变量**的读写操作
 - 需要加上合适的**标记**，才能让读操作与写操作之间产生的同步关系
 - 有不同的标记提供不同强度的同步关系
@@ -163,7 +163,10 @@ void reader() {
 
 ![acq-rel](/img/cpp_memory_model_acq_rel.png)
 
-`*po = program order, *sw = synchronizes-with`
+```
+*po = program order
+*sw = synchronizes-with
+```
 
 > 注：为什么不把同步关系等同视为线程间先行关系？这说的好像同一回事啊——那当然是概念上有简化，比如inter-thread happens-before还可以通过dependency-ordered before来构成，需要更细致的了解可以翻文档
 
