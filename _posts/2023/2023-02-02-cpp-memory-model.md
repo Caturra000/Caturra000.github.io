@@ -9,7 +9,7 @@ description: 本文章是从较为实际的角度去分析C++内存模型，涉�
 
 本文章是从较为实际的角度去分析C++内存模型，涉及到memory order，modification order和release sequence
 
-虽然内容和概念相比于标准是有所删减的，但我希望这篇文章相比cppreference是更易于理解的
+虽然内容和概念相比于标准是有所删减的，但我希望这篇文章相比标准和cppreference都更易于理解
 
 <!--more-->
 
@@ -161,7 +161,9 @@ void reader() {
 
 简单来说，通过synchronizes-with和happens-before的可传递性，即可保证线程安全
 
- 
+![acq-rel](/img/cpp_memory_model_acq_rel.png)
+
+`*po = program order, *sw = synchronizes-with`
 
 > 注：为什么不把同步关系等同视为线程间先行关系？这说的好像同一回事啊——那当然是概念上有简化，比如inter-thread happens-before还可以通过dependency-ordered before来构成，需要更细致的了解可以翻文档
 
@@ -299,3 +301,5 @@ C++ Concurrency in Action, 2nd
 [c++ - What does "release sequence" mean? - Stack Overflow](https://stackoverflow.com/questions/38565650/what-does-release-sequence-mean)
 
 [Release-acquire ordering: must load the value that was stored](https://en.cppreference.com/w/Talk:cpp/atomic/memory_order#:~:text=Release-acquire%3Aordering%3A%3Amust%3Aload%3Athe%3Avalue%3Athat%3Awas%3Astored)
+
+[Concurrency: Algorithms and Theories](https://hongjin-liang.github.io/teaching/concurrency/index.html)
