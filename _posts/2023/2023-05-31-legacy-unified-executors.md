@@ -14,7 +14,7 @@ repo: [Legcay Executors](https://github.com/Caturra000/legacy-executors)
 总的来说就是完成三个模块：
 * 实现`require/query`的非侵入定制点
 * 以及`lightweight executor`和`applicable property`的交互
-* 对支持相同`property`的`executor`，将其`template`做类型抹除处理以支持多态的`polymorphic executor`
+* 对所有相同`property`，将对应`executor`做类型抹除处理以支持多态的`polymorphic executor`
 * （其实还有一个赠品线程池，因为提案写了）
 
 对于`executor`的`property`，库内已集成：
@@ -28,7 +28,7 @@ repo: [Legcay Executors](https://github.com/Caturra000/legacy-executors)
 
 ## Examples
 
-话说写（抄）示例花的时间比库本身要多。。。
+> 其实写（抄）示例花的时间比库本身要多。。。
 
 现在手上有10个左右的示例：
 * `hello_world(3)`：简单实现`inline executor`、使用内置线程池，以及类`asio`的任务提交方式
@@ -41,7 +41,9 @@ repo: [Legcay Executors](https://github.com/Caturra000/legacy-executors)
 * `actor`: 定制一个`actor`通信框架
 * `pipeline(2)`: 定制一个`pipeline`模式，并封装为`stream`
 
-可以通过这些示例，尝试把unified executors适配到任意一个第三方项目
+可以通过了解示例，来理解`executor`到底是什么
+
+也可以通过这些示例，尝试把unified executors适配到任意一个第三方项目
 
 ### 示例1：hello world!
 
@@ -722,7 +724,7 @@ int main() {
 }
 ```
 
-用`executors`也可以封装`actor`框架。这里展示一下任意actor数目的击鼓传花
+用`executors`也可以封装[`actor`](https://en.wikipedia.org/wiki/Actor_model)框架。这里展示一下任意actor数目的击鼓传花
 
 ### 示例11：pipeline
 
@@ -777,6 +779,6 @@ int main() {
 }
 ```
 
-如果并发任务间的输入输出互有依赖，可以使用pipeline完成这个工作
+如果并发任务间的输入输出互有依赖，可以使用[`pipeline`](https://en.wikipedia.org/wiki/Pipeline_(software))完成这个工作
 
 话说这都完全看不出executor的模样了
