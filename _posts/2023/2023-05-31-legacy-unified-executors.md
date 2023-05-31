@@ -24,7 +24,7 @@ repo: [Legcay Executors](https://github.com/Caturra000/legacy-executors)
 * `outstanding_work`：维护当前的执行上下文（`execution context`），可用于阻止提前退出，避免退出再次提交任务后不必的恢复开销
 * `relationship`：如果明确一个任务的提交已经是在`execution context`内部再次提交，可以用`continuation`标记
 
-相比提案，我砍掉了萃取的支持。因为到了`C++20`之后，有不少接口是可以直接用`require-expression`来完成
+相比提案，我砍掉了萃取的支持。因为到了`C++20`之后，有不少接口是可以直接用`requires-expression`来完成
 
 ## Examples
 
