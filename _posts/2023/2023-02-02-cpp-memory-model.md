@@ -129,7 +129,7 @@ void reader() {
 
  
 
-> 注：memory order中还存在一种consume标记，但对大多数架构来说意义不大，这里不做讨论
+> 注：memory order中还存在一种consume标记，但对大多数架构来说意义不大，并且在redhat的[某篇分享](https://gcc.gnu.org/wiki/cauldron2015?action=AttachFile&do=get&target=Torvald+Riegel_+Modern+concurrent+code+in+C.pdf)中提到consume实现上可能存在歧义（TL;DR: Don't use `memory_order_consume`），这里不做讨论。
 
  
 
