@@ -206,7 +206,7 @@ a:link {
 
 .archive {
   margin-top: -30px;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .archive li {
@@ -217,11 +217,11 @@ a:link {
 }
 
 .archive li time {
-  color: #95a5a6;
+  color: #9b9b9b;
 }
 
 .archive .year {
-  color: #6b747f;
+  color: #818181;
   text-transform: uppercase;
   margin: 25px 0;
   font-weight: bolder;

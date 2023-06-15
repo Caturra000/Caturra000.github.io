@@ -4,6 +4,7 @@ title: 归档
 description: 归档
 ---
 <ul class="archive">
+<div class="title"><a href="/">Archives</a></div>
 {% for post in site.posts %}
   {% capture y %}{{post.date | date:"%Y"}}{% endcapture %}
   {% if year != y %}
