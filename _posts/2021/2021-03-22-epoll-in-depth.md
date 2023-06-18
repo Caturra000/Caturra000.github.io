@@ -1,6 +1,6 @@
 ---
 layout: post
-title: epoll in depth
+title: epoll in depth——Linux内核中epoll实现原理详解
 categories: [kernel, RTFSC]
 description: 由于要做年轻人的第一次技术分享，因此我挑了个`epoll`实现原理作为课题，主要是先做下快速介绍，然后直接杠源码（长篇大论没人听警告）
 ---
@@ -9,7 +9,7 @@ description: 由于要做年轻人的第一次技术分享，因此我挑了个`
 
 <!--more-->
 
-（PS. 不想看一堆代码可直接快速浏览文中的流程图）
+（PS. 不想看一堆代码可直接快速浏览文中的流程图，[点我直达](#流程图)）
 
 ## 涉及到的内容
 
@@ -1491,3 +1491,9 @@ static void __wake_up_common(wait_queue_head_t *q, unsigned int mode,
 最近在云通关海猫鸣泣之时，皮一下
 
 ![Erika](/img/Erika.png)
+
+## 23.6.19 update
+
+偶尔回顾一下自己写的文章（特么的写得真好），感觉对当时取得标题不太满意
+
+这篇文章以前就叫*epoll in depth*，长度上短了点，于是我让new bing帮我取了一个新的标题
