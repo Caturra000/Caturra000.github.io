@@ -1494,6 +1494,6 @@ static void __wake_up_common(wait_queue_head_t *q, unsigned int mode,
 
 ## 23.6.19 update
 
-偶尔回顾一下自己写的文章（特么的写得真好），感觉对当时取得标题不太满意
+偶尔回顾一下自己写的文章（特么的写得真好），感觉对当时取的标题不太满意
 
 这篇文章以前就叫*epoll in depth*，长度上短了点，于是我让new bing帮我取了一个新的标题
