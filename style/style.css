@@ -112,8 +112,7 @@ a {
 }
 
 .content i, .content em {
-  color: #7f8c8d;
-  font-style: normal;
+  font-style: italic;
 }
 
 .content img {
