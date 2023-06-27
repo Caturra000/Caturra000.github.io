@@ -515,7 +515,7 @@ static int init(void) {
 3. 注册接收回调后，把`control socket`挂入到`epoll`当中
 4. 初始化`PSI`事件监听
 
-**强硬插入广告：如果你不太了解`epoll`，可以来看下我的文章：[epoll in depth](https://caturra000.github.io/archives/epoll-in-depth/)**
+**强硬插入广告：如果你不太了解`epoll`，可以来看下我的文章：[epoll in depth](/archives/epoll-in-depth/)**
 
 先说`server`注册部分，`lmkd`是自身作为一个监听`server`，构建一个名为`ctrl_socket`的`socket`描述符，使用`listen`并挂入`epoll`来等待事件，事件到达后则`accept`对应的`client`，见回调函数[`ctrl_connect_handler`](https://cs.android.com/android/platform/superproject/+/android-13.0.0_r18:system/memory/lmkd/lmkd.cpp;l=3569)：
 
