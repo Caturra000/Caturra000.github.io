@@ -37,11 +37,11 @@ benefiting from the parallelism offered by modern storage devices.
 | `.tags`    | `blk_mq_tags**`，实际作为一个`(blk_mq_tags*)[]`数组使用，长度为CPU个数 | 管理`request`分配，为每个hwq分配`set->tags[hw_queue_id]` |                                                              |
 
 
-硬件队列关联了tag，实则简介关联到`request`，其结构体对应于`blk_mq_tags`：
+硬件队列关联了tag（从而间接关联到`request`），其结构体对应于`blk_mq_tags`：
 
 | 字段          | 类型                                                         | 用途                                                         | 备注                                                         |
 | ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `.static_rqs` | `request**`，实际作为一个`(request*)[]`数组使用，长度为队列深度参数`set->queue_depth` | 从`buddy`中预先分配`set->queue_depth`个`request`实例，等待后续使用 | 该数组需要tag分配，由搭配的一个位图（`sbitmap`）来快速获得空闲的tag |
+| `.static_rqs` | `request**`，实际作为一个`(request*)[]`数组使用，长度为队列深度参数`set->queue_depth` | 从`buddy`中预先分配`set->queue_depth`个`request`实例，等待后续使用 | 该数组需要tag分配，由搭配的一个位图（`sbitmap`）来快速获得空闲的tag。每一次派发`request`前需要获取到tag与之绑定 |
 | `.rqs`        | `request**`，实际作为一个`(request*)[]`数组使用，长度为队列深度参数`set->queue_depth` | 从`static_rqs[tag]`中获得的`request`实例在非电梯调度下会放入该数组中（同下标），表示in-flight request | <del>实际我也不知道是干嘛的，</del>一种可能的用法是给driver提供一个遍历所有使用中的request的迭代器。所有细节都在[这里](https://elixir.bootlin.com/linux/v4.18.20/A/ident/rqs) |
 
 ## 不太重要的细节
@@ -53,12 +53,37 @@ benefiting from the parallelism offered by modern storage devices.
 * tag对应的`request`数虽然是`set`提供的队列深度数，但是每次分配失败的话，会尝试把队列深度数目折半，这也会实际影响到`set->queue_depth`
 * 预分配`request`的每个实例中其实还藏有driver层所需要的payload，详见[blk_mq_alloc_rqs](https://elixir.bootlin.com/linux/v4.18.20/source/block/blk-mq.c#L1964)
 
+## 一些使用建议
+
+Q. 我用的是比较传统的单队列设备，需要回归单队列框架吗？
+
+不需要。一是`blk-mq`实测性能仍高于`sq`框架，二是内核版本5.0后已经把`sq`框架彻底删了
+
+Q. 多队列框架下是否需要使用IO调度器？
+
+如果是HDD，要。对于（足够高性能的）SSD的话，比方说你需要公平调度，或者做一些QoS也许用得着，但只看性能的话，这是一个开放的话题（[不服跑个分](https://mobile.zol.com.cn/760/7601256.html)吧）
+
+Q. 如果确实需要选用IO调度器，该怎么选？
+
+[redhat文档](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/monitoring_and_managing_system_status_and_performance/setting-the-disk-scheduler_monitoring-and-managing-system-status-and-performance)中给出了一些场景选择，为了节省你的IO，我把要点摘抄下来了：
+
+| Use case                                                     | Disk scheduler                                               |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| Traditional HDD with a SCSI interface                        | Use `mq-deadline` or `bfq`.                                  |
+| High-performance SSD or a CPU-bound system with fast storage | Use `none`, especially when running enterprise applications. Alternatively, use `kyber`. |
+| Desktop or interactive tasks                                 | Use `bfq`.                                                   |
+| Virtual guest                                                | Use `mq-deadline`. With a host bus adapter (HBA) driver that is multi-queue capable, use `none`. |
+
 ## Work In Progress!
 
 剩余章节仍在施工中
+
+TODO 架构上的说明，具体的实现流程
 
 ## References
 
 [Multi-Queue Block IO Queueing Mechanism (blk-mq)](https://www.kernel.org/doc/html/latest/_sources/block/blk-mq.rst.txt)
 
 [Linux Block IO: Introducing Multi-queue SSD Access on Multi-core Systems](https://kernel.dk/systor13-final18.pdf)
+
+[Chapter 11. Setting the disk scheduler Red Hat Enterprise Linux 9 | Red Hat Customer Portal](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/monitoring_and_managing_system_status_and_performance/setting-the-disk-scheduler_monitoring-and-managing-system-status-and-performance)
