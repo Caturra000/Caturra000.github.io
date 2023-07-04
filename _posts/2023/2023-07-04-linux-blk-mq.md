@@ -18,7 +18,7 @@ benefiting from the parallelism offered by modern storage devices.
 
 ## 框架概览
 
-[overview](/img/blk-mq-overview.png)
+![overview](/img/blk-mq-overview.png)
 
 `blk-mq`框架中有2种形式的队列：
 - per-cpu级别的软件队列Software Staging Queue
