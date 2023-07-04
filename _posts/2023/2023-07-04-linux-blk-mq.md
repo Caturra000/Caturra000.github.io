@@ -29,10 +29,6 @@ benefiting from the parallelism offered by modern storage devices.
     - 对应于数据结构`blk_mq_hw_ctx`
     - 进入该队列的request意味着已经经过了调度
 
-> 注：这里的硬件队列与驱动层的队列无关
-
-> 注：maintainer指出，如果在NUMA架构中，L3缓存足够大的话，软件队列可以设置为per-socket级别，这样也许能从cache友好和锁竞争中获取一个平衡点
-
 而每个存储设备有一个controlling structure，为`blk_mq_tag_set`，用于维护队列的关系：
 
 | 字段       | 类型                                                         | 用途                                                     | 备注                                                         |
@@ -50,9 +46,12 @@ benefiting from the parallelism offered by modern storage devices.
 
 ## 不太重要的细节
 
+* `blk-mq`的硬件队列与驱动层的队列无关
+* 虽然软件队列一般认为是per-cpu级别，但是maintainer也指出：如果在NUMA架构中，L3缓存足够大的话，软件队列可以设置为per-socket级别，这样也许能从cache友好和锁竞争中获取一个平衡点
 * 硬件队列个数在不同的场合下是有歧义的，因为kernel里面会把超过CPU个数的硬件队列数目当作看不见（原因是超出部分没有意义），所以并不绝对等于硬件意义上的硬件队列个数
-* tag虽然是给硬件队列用的，但是`blk_mq_tags`实际长度是按CPU个数给的，虽然理解上我觉得没啥问题
-* tag对应的`request`数虽然是`set`提供的队列深度数，但是每次分配失败的话，会尝试把深度数目折半，这也会实际影响到`set->queue_depth`
+* tag虽然是给硬件队列使用，但是`blk_mq_tags`实际长度是按CPU个数给的
+* tag对应的`request`数虽然是`set`提供的队列深度数，但是每次分配失败的话，会尝试把队列深度数目折半，这也会实际影响到`set->queue_depth`
+* 预分配`request`的每个实例中其实还藏有driver层所需要的payload，详见[blk_mq_alloc_rqs](https://elixir.bootlin.com/linux/v4.18.20/source/block/blk-mq.c#L1964)
 
 ## Work In Progress!
 
