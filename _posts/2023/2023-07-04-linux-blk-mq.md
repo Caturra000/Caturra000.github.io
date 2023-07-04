@@ -14,7 +14,7 @@ through queueing and submitting IO requests to block devices simultaneously,
 benefiting from the parallelism offered by modern storage devices.
 ```
 
-**TL;DR** blk-mq是Linux内核实现高IOPS的财富密码，适用于多队列存储设备的block层IO框架
+**TL;DR** blk-mq是block层的多队列IO框架。它是Linux内核实现高IOPS的财富密码，适用于多队列存储设备
 
 ## 框架概览
 
@@ -34,25 +34,19 @@ benefiting from the parallelism offered by modern storage devices.
 > 注：maintainer指出，如果在NUMA架构中，L3缓存足够大的话，软件队列可以设置为per-socket级别，这样也许能从cache友好和锁竞争中获取一个平衡点
 
 而每个存储设备有一个controlling structure，为`blk_mq_tag_set`，用于维护队列的关系：
-- `.mq_maps`字段
-    - 类型：`int*`，实际作为一个`int[]`数组使用，长度为CPU个数
-    - 用途：实现CPU到硬件队列的映射
-    - key：下标通过CPU编号访问
-    - value：映射为硬件队列编号
-    - 例子：`set->mq_map[cpu_j] = hw_queue_i`，其中`i`和`j`互不相干
-- `.tags`字段
-    - 类型：`blk_mq_tags**`，实际作为一个`(blk_mq_tags*)[]`数组使用，长度为CPU个数
-    - 用途：管理`request`分配，为每个hwq分配`set->tags[hw_queue_id]`
+
+| 字段       | 类型                                                         | 用途                                                     | 备注                                                         |
+| ---------- | ------------------------------------------------------------ | -------------------------------------------------------- | ------------------------------------------------------------ |
+| `.mq_maps` | `int*`，实际作为一个`int[]`数组使用，长度为CPU个数           | 实现CPU到硬件队列的映射                                  | 下标为CPU编号，对应值为映射的硬件队列编号。比如`set->mq_map[cpu_j] = hw_queue_i`，其中`i`和`j`互不相干 |
+| `.tags`    | `blk_mq_tags**`，实际作为一个`(blk_mq_tags*)[]`数组使用，长度为CPU个数 | 管理`request`分配，为每个hwq分配`set->tags[hw_queue_id]` |                                                              |
+
 
 硬件队列关联了tag，实则简介关联到`request`，其结构体对应于`blk_mq_tags`：
-- `.static_rqs`字段
-    - 类型：`request**`，实际作为一个`(request*)[]`数组使用，长度为队列深度参数`set->queue_depth`
-    - 用途：从`buddy`中预先分配`set->queue_depth`个`request`实例，等待后续使用
-    - 备注：该数组需要tag分配，由搭配的一个位图（`sbitmap`）来快速获得空闲的tag
-- `.rqs`字段
-    - 类型：`request**`，实际作为一个`(request*)[]`数组使用，长度为队列深度参数`set->queue_depth`
-    - 用途：从`static_rqs[tag]`中获得的`request`实例在非电梯调度下会放入该数组中（同下标），表示in-flight request
-    - 备注：<del>实际我也不知道是干嘛的，</del>一种可能的用法是给driver提供一个遍历所有使用中的request的迭代器。所有细节都在[这里](https://elixir.bootlin.com/linux/v4.18.20/A/ident/rqs)，
+
+| 字段          | 类型                                                         | 用途                                                         | 备注                                                         |
+| ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `.static_rqs` | `request**`，实际作为一个`(request*)[]`数组使用，长度为队列深度参数`set->queue_depth` | 从`buddy`中预先分配`set->queue_depth`个`request`实例，等待后续使用 | 该数组需要tag分配，由搭配的一个位图（`sbitmap`）来快速获得空闲的tag |
+| `.rqs`        | `request**`，实际作为一个`(request*)[]`数组使用，长度为队列深度参数`set->queue_depth` | 从`static_rqs[tag]`中获得的`request`实例在非电梯调度下会放入该数组中（同下标），表示in-flight request | <del>实际我也不知道是干嘛的，</del>一种可能的用法是给driver提供一个遍历所有使用中的request的迭代器。所有细节都在[这里](https://elixir.bootlin.com/linux/v4.18.20/A/ident/rqs) |
 
 ## 不太重要的细节
 
