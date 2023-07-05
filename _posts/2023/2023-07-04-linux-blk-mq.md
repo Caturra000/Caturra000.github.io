@@ -5,7 +5,9 @@ categories: [kernel]
 description: 一些关于multiqueue的笔记
 ---
 
-## 什么是blk-mq
+## 背景
+
+### 什么是blk-mq
 
 ```
 The Multi-Queue Block IO Queueing Mechanism is an API to enable fast storage
@@ -14,11 +16,25 @@ through queueing and submitting IO requests to block devices simultaneously,
 benefiting from the parallelism offered by modern storage devices.
 ```
 
-**TL;DR** blk-mq是block层的多队列IO框架。它是Linux内核实现高IOPS的财富密码，适用于多队列存储设备
+**TL;DR** `blk-mq`是内核block层的多队列IO框架，适用于高IOPS要求的多队列存储设备
+
+### 为什么需要blk-mq
+
+![bottleneck](/img/blk-mq-bottleneck.png)
+
+主要原因是multi-core和multi-queue的发展，性能瓶颈从硬件本身转移到软件层面上：单队列框架对于锁竞争和远端内存访问成为了性能问题。因此，重构是必须的
+
+![benchmark-IOPS](/img/blk-mq-benchmark-IOPS.png)
+
+![benchmark-latency](/img/blk-mq-benchmark-latency.png)
+
+在具体的跑分上，可以看出单队列框架（SQ）在扩展性上是无法满足硬件发展的
 
 ## 框架概览
 
 ![overview](/img/blk-mq-overview.png)
+
+为了减少锁争用和尽可能利用局部性原理，`blk-mq`把同时负责提交和派发的单一队列拆分为多层级和多队列
 
 `blk-mq`框架中有2种形式的队列：
 - per-cpu级别的软件队列Software Staging Queue
