@@ -234,6 +234,142 @@ blk_mq_init_queue(set)
         return q
 ```
 
+## 框架的IO处理
+
+### 流程之提交IO
+
+userspace进行的IO操作，具体的IO类型和操作对象会以`bio`结构体描述，并在内核中会通过`submit_bio`统一接口进行提交
+
+```
+submit_bio(bio)
+    ...
+    IO accounting stuff
+    ...
+    return generic_make_request_(bio)
+        q = bio->bi_disk->queue
+        ...
+        workaround for stacked devices
+        ...
+        return q->make_request_fn(q, bio) ⭐
+```
+
+从前面的流程可以知道，`blk-mq`下的`make_request_fn`注册实例为`blk_mq_make_request`
+
+```
+blk_mq_init_allocated_queue()
+    ...
+    blk_queue_make_request(q, blk_mq_make_request)
+        set default blk-mq limits
+        q->make_request_fn = blk_mq_make_request
+    ...
+```
+
+### 流程之处理IO
+
+处理IO简而言之就是把`bio`转换为`request`结构体，并插入到请求队列中
+
+相较于提交IO是在当前进程的内核栈上进行，处理IO还有可能会在`kblockd`内核线程中异步执行
+
+
+```
+blk_mq_make_request(q, bio)
+    按需执行bio split（通常是按软硬件限制）
+    按需合并到进程的plug队列，成功则结束
+        precondition: !FLUSH_FUA && !NOMERGE
+    blk_mq_sched_bio_merge
+        尝试将sched队列中的pending request合并，成功则返回
+    wbt_wait
+        当超过writeback limit时，在这里提供一个阻塞点
+    blk_mq_get_request
+        返回一个request
+        note: 上面的按需合并没有完成，因此需要request
+    条件分支：
+        1. flush or fua
+            需要尽快下达，跳过scheduler，request插入到单独的flush队列，唤醒执行hctx
+        2. plug && q->nr_hw_queues == 1
+            单队列设备且plug则加入plug的mq_list中
+        3. plug && !no_merge
+            似乎和case2差不多，但这里暗示是多队列的plug
+            但多队列应该是默认就关闭了plug，略
+        4. q->nr_hw_queues > 1 && sync
+            多队列，没有plug走blk_mq_try_issue_directly
+            读操作的话，应该适用于这里
+        5. others
+            走blk_mq_sched_insert_request
+            这里会继续细分情况，比如是否flush，是否有elevator
+
+如果是case4：
+    • 非电梯情况下，就是直走到driver层提供的入队函数
+    • 否则，走电梯sched_insert
+
+如果是case5：
+    • 非电梯情况下，会插入到ctx队列中
+    • 否则，走电梯sched_insert
+
+还需要查看run_queue设置，如果有，紧接着blk_mq_run_hw_queue执行hctx来批量派发IO
+一般来说是run_queue = true，除非driver层告知hctx不可用
+```
+
+执行hctx（hw queue）的过程`blk_mq_run_hw_queue`可能是sync（同步）的，也可能是async（异步）的
+
+在上述的条件分支中：
+* 如果是case4，那就是sync
+* 如果是case5，那就是async
+
+```
+blk_mq_run_hw_queue
+    __blk_mq_delay_run_hw_queue
+        __blk_mq_run_hw_queue
+            blk_mq_sched_dispatch_requests
+                这里就是sync入口
+
+blk_mq_sched_dispatch_requests(hctx)
+    LIST_HEAD(rq_list)
+    if hctx->dispatch is not empty
+        list_splice_init(hctx->dispatch, rq_list)
+            在hctx实例中，dispatch字段是实质意义的请求队列，现在将其移交到栈上申请的rq_list
+    分几种情况：
+    1. blk_mq_dispatch_rq_list
+        优先派发之前在hctx中没有派发的请求到驱动
+    2. blk_mq_do_dispatch_sched
+        将sched队列中的请求移入rq_list，然后调用blk_mq_dispatch_rq_list，派发到driver
+    3. blk_mq_do_dispatch_ctx
+        在hctx busy的情况下，直接将ctx的rq移入到rq_list，然后派发给驱动, 公平起见，会考虑到轮流对多个ctx执行派发
+    4. blk_mq_dispatch_rq_list
+        其它情况将rq_list中请求派发给driver处理
+```
+
+而异步流程会有稍微不同的入口
+
+```diff
+blk_mq_run_hw_queue
+    __blk_mq_delay_run_hw_queue
+-       __blk_mq_run_hw_queue
++       kblockd_mod_delayed_work_on
++       mod_delayed_work_on(cpu = hctx_next_cpu, kblockd_workqueue, dwork = hctx->run_work, delay = 0)
+```
+
+任务分配的注册在前面的初始化流程
+
+```
+blk_mq_init_hctx
+    ...
+    INIT_DELAYED_WORK(&hctx->run_work, blk_mq_run_work_fn)
+```
+
+这里涉及到`workqueue`机制，关注一下它的使用context：
+* 线程实例：`kblockd`
+* 任务类型：`delayed_work`类型的`hctx->run_work`
+* 具体任务：其`run_work`对应于`blk_mq_run_work_fn`
+
+```
+blk_mq_run_work_fn(work)
+    hctx = container_of(work, ...)
+    __blk_mq_run_hw_queue(hctx)
+```
+
+其实`blk_mq_run_work_fn`峰回路转，还是回到了sync流程，只不过是交给了`kblockd`来处理
+
 ## 不太重要的细节
 
 * `blk-mq`的硬件队列与驱动层的队列无关
@@ -243,6 +379,8 @@ blk_mq_init_queue(set)
 * tag对应的`request`数虽然是`set`提供的队列深度数，但是每次分配失败的话，会尝试把队列深度数目折半，这也会实际影响到`set->queue_depth`
 * 预分配`request`的每个实例中其实还藏有driver层所需要的payload，详见[blk_mq_alloc_rqs](https://elixir.bootlin.com/linux/v4.18.20/source/block/blk-mq.c#L1964)
 * `ns->queue`即是`request_queue`实例
+* `submit_bio`下，`generic_make_request`已经随着SQ框架的移除也被移除，改为`blk_mq_submit_bio`，不过本质不变
+* 处理IO过程中，case4走sync运行hctx是因为IO操作本来就是sync类型的
 
 ## 一些使用建议
 
@@ -265,11 +403,10 @@ Q. 如果确实需要选用IO调度器，该怎么选？
 | Desktop or interactive tasks                                 | Use `bfq`.                                                   |
 | Virtual guest                                                | Use `mq-deadline`. With a host bus adapter (HBA) driver that is multi-queue capable, use `none`. |
 
-## Work In Progress!
+## TODO
 
-剩余章节仍在施工中
-
-TODO 架构上的说明，具体的实现流程
+* 完成IO流程
+* 处理IO流程的细节完善
 
 ## References
 
