@@ -5,6 +5,10 @@ categories: [kernel]
 description: 一些关于multiqueue的笔记
 ---
 
+## 导读
+
+本文首先从背景和架构上简单解释`blk-mq`框架，随后会通过数据结构和具体流程去更加深入了解该机制的内部实现
+
 ## 背景
 
 ### 什么是blk-mq
@@ -281,7 +285,7 @@ blk_mq_make_request(q, bio)
     wbt_wait
         当超过writeback limit时，在这里提供一个阻塞点
     blk_mq_get_request
-        返回一个request
+        返回一个request，需要static_rqs和sbitmap搭配使用
         note: 上面的按需合并没有完成，因此需要request
     条件分支：
         1. flush or fua
@@ -332,11 +336,11 @@ blk_mq_sched_dispatch_requests(hctx)
     1. blk_mq_dispatch_rq_list
         优先派发之前在hctx中没有派发的请求到驱动
     2. blk_mq_do_dispatch_sched
-        将sched队列中的请求移入rq_list，然后调用blk_mq_dispatch_rq_list，派发到driver
+        将sched队列中的请求移入rq_list，然后调用blk_mq_dispatch_rq_list，派发到驱动
     3. blk_mq_do_dispatch_ctx
         在hctx busy的情况下，直接将ctx的rq移入到rq_list，然后派发给驱动, 公平起见，会考虑到轮流对多个ctx执行派发
     4. blk_mq_dispatch_rq_list
-        其它情况将rq_list中请求派发给driver处理
+        其它情况将rq_list中请求派发给驱动处理
 ```
 
 而异步流程会有稍微不同的入口
@@ -405,7 +409,7 @@ Q. 如果确实需要选用IO调度器，该怎么选？
 
 ## TODO
 
-* 完成IO流程
+* 完成IO流程（中断相关）
 * 处理IO流程的细节完善
 
 ## References
